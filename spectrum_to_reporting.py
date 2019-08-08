@@ -521,8 +521,6 @@ for r in result_walmart_list:
 
     print('Walmart US Unload Completed')
 
-
-
 for r in result_walmart_ca_list:
     print("unloading contents from " + str(r))
 
@@ -567,41 +565,12 @@ resp = s3.list_objects_v2(Bucket='fw-pg-datascience', Prefix='Shipt SOV/')
 print(resp)
 for obj in resp['Contents']:
 
-    if 'csv000' in obj:
+    f_name = obj['Key']
 
-        f_name=obj['Key']
-        new_f_name=f_name.split('.', 1)[0] + '.csv'
+    if 'csv000' in f_name:
+        new_f_name = f_name.split('.', 1)[0] + '.csv'
         print(new_f_name)
-        #print(obj)
-
-        s3 = boto3.resource('s3')
-
-        print("Copying " + f_name + " To "+new_f_name)
-        rename_cmd = 'aws s3 cp \"s3://fw-pg-datascience/' + f_name + '\" \"s3://fw-pg-datascience/'+new_f_name+'\"'
-
-        del_cmd = 'aws s3 rm \"s3://fw-pg-datascience/' + f_name + '\"'
-
-        p = subprocess.Popen(rename_cmd, shell=True, stdout=subprocess.PIPE)
-        p.communicate()
-
-        print("Deleting Old " + f_name )
-
-        pp=subprocess.Popen(del_cmd, shell=True, stdout=subprocess.PIPE)
-        pp.communicate()
-
-
-s3 = boto3.client('s3')
-resp = s3.list_objects_v2(Bucket='fw-pg-datascience', Prefix='Instacart SOV/')
-
-print(resp)
-for obj in resp['Contents']:
-
-    if 'csv000' in obj:
-
-        f_name=obj['Key']
-        new_f_name=f_name.split('.', 1)[0] + '.csv'
-        print(new_f_name)
-        #print(obj)
+        # print(obj)
 
         s3 = boto3.resource('s3')
 
@@ -613,7 +582,34 @@ for obj in resp['Contents']:
         p = subprocess.Popen(rename_cmd, shell=True, stdout=subprocess.PIPE)
         p.communicate()
 
-        print("Deleting Old " + f_name  )
+        print("Deleting Old " + f_name)
+        pp = subprocess.Popen(del_cmd, shell=True, stdout=subprocess.PIPE)
+        pp.communicate()
+
+s3 = boto3.client('s3')
+resp = s3.list_objects_v2(Bucket='fw-pg-datascience', Prefix='Instacart SOV/')
+
+print(resp)
+for obj in resp['Contents']:
+
+    f_name = obj['Key']
+
+    if 'csv000' in f_name:
+        new_f_name = f_name.split('.', 1)[0] + '.csv'
+        print(new_f_name)
+        # print(obj)
+
+        s3 = boto3.resource('s3')
+
+        print("Copying " + f_name + " To " + new_f_name)
+        rename_cmd = 'aws s3 cp \"s3://fw-pg-datascience/' + f_name + '\" \"s3://fw-pg-datascience/' + new_f_name + '\"'
+
+        del_cmd = 'aws s3 rm \"s3://fw-pg-datascience/' + f_name + '\"'
+
+        p = subprocess.Popen(rename_cmd, shell=True, stdout=subprocess.PIPE)
+        p.communicate()
+
+        print("Deleting Old " + f_name)
         pp = subprocess.Popen(del_cmd, shell=True, stdout=subprocess.PIPE)
         pp.communicate()
 
@@ -623,12 +619,12 @@ resp = s3.list_objects_v2(Bucket='fw-pg-datascience', Prefix='Target SOV/')
 print(resp)
 for obj in resp['Contents']:
 
-    if 'csv000' in obj:
+    f_name = obj['Key']
 
-        f_name=obj['Key']
-        new_f_name=f_name.split('.', 1)[0] + '.csv'
+    if 'csv000' in f_name:
+        new_f_name = f_name.split('.', 1)[0] + '.csv'
         print(new_f_name)
-        #print(obj)
+        # print(obj)
 
         s3 = boto3.resource('s3')
 
@@ -640,10 +636,9 @@ for obj in resp['Contents']:
         p = subprocess.Popen(rename_cmd, shell=True, stdout=subprocess.PIPE)
         p.communicate()
 
-        print("Deleting Old " + f_name  )
+        print("Deleting Old " + f_name)
         pp = subprocess.Popen(del_cmd, shell=True, stdout=subprocess.PIPE)
         pp.communicate()
-
 
 s3 = boto3.client('s3')
 resp = s3.list_objects_v2(Bucket='fw-pg-datascience', Prefix='Walmart SOV/')
@@ -651,11 +646,12 @@ resp = s3.list_objects_v2(Bucket='fw-pg-datascience', Prefix='Walmart SOV/')
 print(resp)
 for obj in resp['Contents']:
 
-    if 'csv000' in obj:
-        f_name=obj['Key']
-        new_f_name=f_name.split('.', 1)[0] + '.csv'
+    f_name = obj['Key']
+
+    if 'csv000' in f_name:
+        new_f_name = f_name.split('.', 1)[0] + '.csv'
         print(new_f_name)
-        #print(obj)
+        # print(obj)
 
         s3 = boto3.resource('s3')
 
@@ -667,11 +663,9 @@ for obj in resp['Contents']:
         p = subprocess.Popen(rename_cmd, shell=True, stdout=subprocess.PIPE)
         p.communicate()
 
-        print("Deleting Old " + f_name  )
+        print("Deleting Old " + f_name)
         pp = subprocess.Popen(del_cmd, shell=True, stdout=subprocess.PIPE)
         pp.communicate()
-
-
 
 s3 = boto3.client('s3')
 resp = s3.list_objects_v2(Bucket='fw-pg-datascience', Prefix='Walmart CA SOV/')
@@ -679,9 +673,9 @@ resp = s3.list_objects_v2(Bucket='fw-pg-datascience', Prefix='Walmart CA SOV/')
 print(resp)
 for obj in resp['Contents']:
 
-    if 'csv000' in obj:
+    f_name=obj['Key']
 
-        f_name=obj['Key']
+    if 'csv000' in f_name:
         new_f_name=f_name.split('.', 1)[0] + '.csv'
         print(new_f_name)
         #print(obj)
@@ -703,10 +697,6 @@ for obj in resp['Contents']:
 
 
 print('done unloading and renaming files')
-
-
-
-
 
 
 
